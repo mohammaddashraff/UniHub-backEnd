@@ -39,7 +39,7 @@ const uploadFileToFirebase = async (filePath, destination, mimetype) => {
 
 const getUserPhotoService = (req,callback) => {
     const token = req.headers.authorization.split(' ')[1];
-    jwt.verify(token, 'unihubaammy', async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', async (err, decoded) => {
         if (err) {
             new Error('Token verification failed');
         } else {
@@ -72,7 +72,7 @@ const uploadUserPhotoService = async (req) => {
     const token = req.headers.authorization.split(' ')[1];
 
     return new Promise((resolve, reject) => {
-        jwt.verify(token, 'unihubaammy', async (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', async (err, decoded) => {
             if (err) {
                 reject(new Error('Token verification failed'));
             } else {
@@ -194,7 +194,7 @@ const signInService = (userData, callback) => {
             if (bcryptRes) {
                 // Generate JWT token
                 const userId = res[0].userID;
-                const token = jwt.sign({id: userId}, 'unihubaammy', {expiresIn: '12h'});
+                const token = jwt.sign({id: userId}, process.env.JWT_SECRET || 'unihubaammy', {expiresIn: '12h'});
                 //Get userType
                 const query = 'select userType from user where userID = ?'
                 db.query(query, [userId], (err, res) => {
@@ -215,7 +215,7 @@ const signInService = (userData, callback) => {
 };
 
 const deleteUserService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
             return;
@@ -233,7 +233,7 @@ const deleteUserService = (token, callback) => {
 };
 
 const editUserService = (token, userData, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback(err, null);
         } else {
@@ -268,7 +268,7 @@ const editUserService = (token, userData, callback) => {
 
 
 const viewProfileService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
             return;
@@ -295,10 +295,10 @@ const forgetPasswordService = (userData, callback) => {
         const count = res[0].count;
         if (count === 1) {
             const userEmail = email;
-            const token = jwt.sign({userEmail}, 'unihubaammy', {expiresIn: '1h'});
+            const token = jwt.sign({userEmail}, process.env.JWT_SECRET || 'unihubaammy', {expiresIn: '1h'});
             const otp = Math.ceil(10000 + Math.random() * 90000);
             let mailOptions = {
-                from: 'unihub.gp@gmail.com',
+                from: process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@unihub.local',
                 to: email,
                 subject: 'OTP for Password reset',
                 text: `Your OTP for resetting password is: ${otp}`

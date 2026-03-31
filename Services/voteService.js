@@ -2,7 +2,7 @@ const db = require('../Utils/db');
 const jwt = require('../Utils/jwt');
 
 const upVoteService = (postId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback({ message: 'Token verification failed', status: 401 });
             return;
@@ -50,7 +50,7 @@ const upVoteService = (postId, token, callback) => {
 };
 
 const downVoteService = (postId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback({ message: 'Token verification failed', status: 401 });
             return;
@@ -116,7 +116,7 @@ const getVoteCountsService = (postId, callback) => {
 };
 
 const removeVoteService = (postId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback({ message: 'Token verification failed', status: 401 });
             return;

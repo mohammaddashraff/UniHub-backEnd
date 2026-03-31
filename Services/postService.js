@@ -3,7 +3,7 @@ const jwt = require('../Utils/jwt');
 
 const createPostService = (postData, courseId, token, callback) => {
     console.log('Starting createPostService');
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification failed:', err.message);
             return callback(null, { message: 'Invalid token', details: err.message, status: 401 });
@@ -54,7 +54,7 @@ const createPostService = (postData, courseId, token, callback) => {
 
 
 const editPostService = (newContent, postId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification error:', err);
             callback({ message: 'Token verification failed', status: 401 }, null);
@@ -78,7 +78,7 @@ const editPostService = (newContent, postId, token, callback) => {
 };
 
 const deletePostService = (postId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Invalid token', details: err.message }, null);
         }
@@ -138,7 +138,7 @@ const deletePostService = (postId, token, callback) => {
 };
 
 const listPostsByCourseIdService = (courseId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
         } else {
@@ -155,7 +155,7 @@ const listPostsByCourseIdService = (courseId, token, callback) => {
 };
 
 const listAllPostsService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
         } else {

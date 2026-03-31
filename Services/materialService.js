@@ -38,7 +38,7 @@ const uploadFileToFirebase = async (filePath, destination, mimetype) => {
 const uploadFileAndInsertMetadata = async (req) => {
     const token = req.headers.authorization.split(' ')[1]; // Assuming the token is passed in the Authorization header
     return new Promise((resolve, reject) => {
-        jwt.verify(token, 'unihubaammy', async (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', async (err, decoded) => {
             if (err) {
                 reject(new Error('Token verification failed'));
             } else {
@@ -84,7 +84,7 @@ const uploadFileAndInsertMetadata = async (req) => {
 
 const editMaterial = (req, callback) => {
     const token = req.headers.authorization.split(' ')[1]; // Assuming token is passed in the Authorization header
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(new Error('Unauthorized'));
             return;
@@ -153,7 +153,7 @@ const deleteLocalFile = (filePath) => {
 };
 const editMaterialDesc = (materialId, newDesc, token, callback) => {
     try {
-        jwt.verify(token, 'unihubaammy', (err, decoded) => {
+        jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
             if (err) {
                 callback(err, null);
                 return;
@@ -207,7 +207,7 @@ const deleteFileFromFirebase = (destination, callback) => {
 
 const deleteMaterial = (materialId, req, callback) => {
     const token = req.headers.authorization.split(' ')[1];
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(new Error('Token verification failed'), null);
             return;

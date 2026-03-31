@@ -108,7 +108,7 @@ const getCourseStatus = (req, res) => {
 const getUserCourseStatistics = (req, res) => {
    const token = req.headers.authorization.split(' ')[1];
 
-   jwt.verify(token, 'unihubaammy', (err, decoded) => {
+   jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
        if (err) {
            res.status(401).json({ error: 'Unauthorized' });
        } else {
@@ -294,7 +294,7 @@ const uploadCoursePhoto = (req, res) => {
         return res.status(401).json({error: 'Authorization token not provided'});
     }
 
-    jwt.verify(token, 'unihubaammy', async (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', async (err, decoded) => {
         if (err) {
             return res.status(401).json({error: 'Invalid token'});
         }

@@ -2,7 +2,7 @@ const db = require('../Utils/db');
 const jwt = require('../Utils/jwt');
 
 const createCourseService = (courseData, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback({ message: 'Token verification failed', status: 401 });
             return;
@@ -48,7 +48,7 @@ const createCourseService = (courseData, token, callback) => {
 };
 
 const deleteCourseService = (courseCode, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback({ message: 'Token verification failed', status: 401 });
             return;
@@ -92,7 +92,7 @@ const deleteCourseService = (courseCode, token, callback) => {
 };
 
 const editCourseService = (courseId, courseData, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback({ message: 'Token verification failed', status: 401 });
             return;
@@ -136,7 +136,7 @@ const editCourseService = (courseId, courseData, token, callback) => {
 };
 
 const listAllUsersService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Token verification failed', status: 401 });
         }
@@ -168,7 +168,7 @@ const listAllUsersService = (token, callback) => {
 };
 
 const deleteUserService = (adminToken, userIdToDelete, callback) => {
-    jwt.verify(adminToken, 'unihubaammy', (err, decoded) => {
+    jwt.verify(adminToken, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Invalid token', status: 401 }, null);
         }

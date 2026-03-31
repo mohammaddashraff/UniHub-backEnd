@@ -1,70 +1,192 @@
-# Getting Started with Create React App
+# UniHub Back-End API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Node.js + Express REST API for a university learning platform.
+
+UniHub supports user authentication, course management, tasks, course materials, posts, comments, voting, profile/course image uploads, and AI-assisted endpoints.
+
+## Why This Project
+
+This backend is built as the core service layer for an LMS-like system where students and instructors can collaborate around courses, announcements, materials, and discussions.
+
+## Core Features
+
+- Authentication and authorization with JWT
+- User profile management and photo upload
+- Course listing, registration, search, rating, and instructor analytics
+- Task management per authenticated user
+- Course material upload/edit/delete with cloud storage integration
+- Posts and announcements per course
+- Comment system with AI-generated comment support
+- Upvote/downvote system on posts
+- Admin endpoints for course and user management
+- Health-check endpoint for deployment monitoring
+
+## Tech Stack
+
+- Node.js
+- Express.js
+- MySQL / MySQL2
+- Firebase Admin SDK (storage)
+- Multer + Sharp (uploads and image processing)
+- JWT (`jsonwebtoken`)
+- Nodemailer (OTP email flow)
+- OpenAI API (AI endpoints)
+
+## Project Structure
+
+```text
+UniHub-backEnd/
+├── Controllers/
+├── Services/
+├── Utils/
+├── app.js
+├── routes.js
+├── package.json
+└── README.md
+```
+
+## API Overview
+
+### Auth & User
+
+- `POST /signUp`
+- `POST /signIn`
+- `DELETE /deleteUser`
+- `PUT /editUser`
+- `GET /getUserData`
+- `POST /forgetPassword`
+- `POST /checkOTP`
+- `PUT /changePassword`
+- `POST /upload-photo`
+- `GET /get-photo`
+- `GET /user/:userId`
+
+### Courses
+
+- `GET /courses`
+- `POST /courses/register`
+- `GET /courses/registered`
+- `GET /courses/search`
+- `GET /courses/:courseID`
+- `GET /courses/:courseId/status`
+- `PUT /courses/:courseId/archive`
+- `POST /course/:courseId/rate`
+- `GET /course/:courseId/viewrate`
+- `GET /course/:courseId/rating`
+- `GET /course/:courseId/registered`
+- `GET /course/userstatistics`
+- `GET /course/instructor`
+- `GET /search-courses`
+- `GET /instructor-courses-count`
+- `GET /instructor-user-count`
+- `POST /upload-course-photo`
+- `GET /course-photo/:courseId`
+
+### Tasks
+
+- `POST /createTasks`
+- `DELETE /deleteTasks`
+- `GET /listTasks`
+- `PUT /markTaskAsCompleted`
+
+### Materials
+
+- `POST /material/upload`
+- `GET /material/course/:courseId`
+- `PUT /material/edit`
+- `PUT /material/:materialId/editDescription`
+- `DELETE /material/delete/:materialId`
+
+### Posts & Comments
+
+- `POST /post/create/:courseId`
+- `PUT /post/edit/:postId`
+- `DELETE /post/delete/:postId`
+- `GET /post/course/:courseId`
+- `GET /posts`
+- `GET /announcements/recent`
+- `GET /posts/:courseId/tag/:tag`
+- `POST /post/:postId/addcomment`
+- `PUT /comment/:commentId`
+- `DELETE /comment/:commentId`
+- `GET /post/:postId/comments`
+- `POST /posts/:postId/comment`
+
+### Voting
+
+- `POST /upvote/:postId`
+- `POST /downvote/:postId`
+- `GET /votes/:postId`
+- `DELETE /votes/remove/:postId`
+
+### Admin
+
+- `POST /admin/create`
+- `DELETE /admin/delete`
+- `PUT /admin/edit/:courseId`
+- `GET /users`
+- `DELETE /deleteUser/:userId`
+
+### AI & System
+
+- `POST /chatGpt`
+- `GET /health`
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/mohammaddashraff/UniHub-backEnd.git
+cd UniHub-backEnd
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+```bash
+cp .env.example .env
+```
+
+Update `.env` with your database, JWT secret, SMTP credentials, Firebase settings, and OpenAI key.
+
+### 4. Run the server
+
+Development mode:
+
+```bash
+npm run dev
+```
+
+Production mode:
+
+```bash
+npm start
+```
+
+The API runs on `http://localhost:4000` by default.
 
 ## Available Scripts
 
-In the project directory, you can run:
+- `npm run dev` - Start with Nodemon
+- `npm start` - Start with Node.js
+- `npm test` - Placeholder script (no automated tests yet)
 
-### `npm start`
+## Security Notes
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Secrets are loaded from environment variables.
+- Do not commit `.env` or service-account credential files.
+- Use a strong `JWT_SECRET` in production.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Author
 
-### `npm test`
+Mohammad Ashraf
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If you want, I can also add Swagger/OpenAPI docs next to make the project even more impressive for recruiters.

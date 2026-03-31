@@ -141,7 +141,7 @@ const listCoursesService = (callback) => {
 };
 
 const listRegisteredCoursesService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
             return;
@@ -166,7 +166,7 @@ const listRegisteredCoursesService = (token, callback) => {
 
 
 const registerInCourseService = (courseCode, passKey, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
             return;
@@ -258,7 +258,7 @@ const showCourseDetailService = (courseID, callback) => {
 */
 
 const getCourseStatusService = (courseId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
         } else {
@@ -322,7 +322,7 @@ const getUserCourseStatisticsService = (userId, callback) => {
 
 
 const listInstructorCourseService = (token,callback)=>{
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
             return;
@@ -340,7 +340,7 @@ const listInstructorCourseService = (token,callback)=>{
 }
 
 const isUserRegisteredInCourseService = (courseId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Token verification failed', status: 401 });
         }
@@ -371,7 +371,7 @@ const isUserRegisteredInCourseService = (courseId, token, callback) => {
 };
 
 const courseRatingService = (courseId, rating, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Token verification failed', status: 401 });
         }
@@ -431,7 +431,7 @@ const calculateCourseRatingService = (courseId, callback) => {
 };
 
 const listUserCourseRatingService = (courseId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification failed:', err);
             return callback(null, { message: 'Token verification failed', status: 401 });
@@ -460,7 +460,7 @@ const listUserCourseRatingService = (courseId, token, callback) => {
     });
 };
 const searchInstructorCoursesService = (token, course, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Invalid token', status: 401 }, null);
         }
@@ -486,7 +486,7 @@ const searchInstructorCoursesService = (token, course, callback) => {
 };
 
 const listInstructorCoursesCountService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback(null, { message: 'Invalid token', status: 401 });
         }
@@ -509,7 +509,7 @@ const listInstructorCoursesCountService = (token, callback) => {
 };
 
 const listInstructorUserCountService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback(null, { message: 'Invalid token', status: 401 });
         }
@@ -536,7 +536,7 @@ const listInstructorUserCountService = (token, callback) => {
     });
 };
 const archiveCourseService = (token, courseId, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             return callback({ message: 'Token verification failed', status: 401 });
         }

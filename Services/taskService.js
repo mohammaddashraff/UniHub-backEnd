@@ -5,7 +5,7 @@ const jwt = require('../Utils/jwt');
 // ADD COLUMN dueTime TIME DEFAULT NULL;
 
 const createTaskService = (taskData, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification failed:', err);
             callback({ message: 'Token verification failed', status: 401 });
@@ -36,7 +36,7 @@ const createTaskService = (taskData, token, callback) => {
 
 // Delete a task by task name
 const deleteTaskService = (taskName, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification failed:', err);
             callback({ message: 'Token verification failed', status: 401 });
@@ -60,7 +60,7 @@ const deleteTaskService = (taskName, token, callback) => {
 
 // List tasks for a user based on token
 const listTasksService = (token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             callback(err, null);
         } else {

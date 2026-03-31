@@ -1,36 +1,36 @@
 const db = require('../Utils/db');
 const jwt = require('../Utils/jwt');
 const {OpenAI} = require("openai");
-const {question} = require("readline-sync");
+
+const openai = process.env.OPENAI_API_KEY
+    ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+    : null;
 
 
 const addCommentServiceForChatGpt = (postId, callback) => {
+    if (!openai) {
+        callback({ message: 'OPENAI_API_KEY is not configured', status: 500 }, null);
+        return;
+    }
+
     db.execute('select content from posts where postId = ? ',[postId],async (err, res) => {
-        if (err) {
-            callback(null, 'Post not found')
+        if (err || !res.length) {
+            callback({ message: 'Post not found', status: 404 }, null);
         } else {
             const postContent = res[0].content
             try {
                 const response = await openai.chat.completions.create({
-                    model: "gpt-3.5-turbo",
+                    model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
                     messages: [{role: "user", content: postContent}],
                     max_tokens: 150,
                 });
                 const answer = response.choices[0].message.content.trim();
                 const query = 'INSERT INTO comment (userID,postId, commentDate, commentBody) VALUES (?,?, NOW(), ?)';
-                // db.query(query, [postId, answer], async (result, err) => {
-                //     if (err) {
-                //         console.error('Database query error:', err);
-                //         callback({message: 'Database query error', status: 500}, null);
-                //     } else {
-                //         callback(null, {message: 'Comment added successfully', status: 201});
-                //     }
-                // });
                 await db.execute(query,[125,postId,answer])
                 callback(null, { message: 'Comment added successfully', status: 201 });
             } catch (error) {
                 console.error('Error generating answer:', error);
-                callback(null, error)
+                callback({ message: 'Failed to generate AI comment', status: 500, details: error.message }, null);
             }
         }
 
@@ -38,7 +38,7 @@ const addCommentServiceForChatGpt = (postId, callback) => {
 };
 
 const addCommentService = (commentData, postId, token, callback) => {
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification error:', err);
             callback({ message: 'Token verification failed', status: 401 }, null);
@@ -73,7 +73,7 @@ const editCommentService = (commentId, token, commentData, callback) => {
         return callback({ message: 'Authorization token not provided', status: 401 }, null);
     }
 
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification error:', err);
             return callback({ message: 'Token verification failed', status: 401 }, null);
@@ -125,7 +125,7 @@ const deleteCommentService = (commentId, token, callback) => {
         return callback({ message: 'Authorization token not provided', status: 401 }, null);
     }
 
-    jwt.verify(token, 'unihubaammy', (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SECRET || 'unihubaammy', (err, decoded) => {
         if (err) {
             console.error('Token verification error:', err);
             return callback({ message: 'Token verification failed', status: 401 }, null);

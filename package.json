@@ -1,14 +1,27 @@
 {
   "name": "unihub",
   "version": "1.0.0",
-  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
-  "main": "index.js",
+  "description": "Backend API for UniHub LMS with authentication, course management, tasks, posts, comments, voting, and file uploads.",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"No automated tests configured yet\""
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "nodejs",
+    "express",
+    "mysql",
+    "rest-api",
+    "lms",
+    "backend"
+  ],
+  "author": "Mohammad Ashraf",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohammaddashraff/UniHub-backEnd.git"
+  },
   "dependencies": {
     "@google-cloud/storage": "^7.11.2",
     "axios": "^1.7.2",

@@ -2,11 +2,11 @@
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-    host: 'localhost',
-    database: 'uniHub',
-    port: '3306',
-    user: 'root',
-    password: '',
+    host: process.env.DB_HOST || 'localhost',
+    database: process.env.DB_NAME || 'uniHub',
+    port: process.env.DB_PORT || '3306',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
