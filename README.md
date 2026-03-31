@@ -177,16 +177,8 @@ The API runs on `http://localhost:4000` by default.
 - `npm start` - Start with Node.js
 - `npm test` - Placeholder script (no automated tests yet)
 
-## Security Notes
-
-- Secrets are loaded from environment variables.
-- Do not commit `.env` or service-account credential files.
-- Use a strong `JWT_SECRET` in production.
-
 ## Author
 
 Mohammad Ashraf
 
 ---
-
-If you want, I can also add Swagger/OpenAPI docs next to make the project even more impressive for recruiters.
